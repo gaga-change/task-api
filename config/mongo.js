@@ -1,23 +1,33 @@
+/**
+ * 连接MongoDB配置文件
+ */
 
-// MongoDB 用户名
-const mongodbUsername = process.env.MONGODB_USERNAME || ''
-// MongoDB 密码
-const mongodbPassword = process.env.MONGODB_PASSWORD || ''
-// MongoDB 连接域名
-const mongodbHost = process.env.MONGODB_HOST || 'localhost'
-// MongoDB 连接端口
-const mongodbPort = process.env.MONGODB_PORT || '27017'
-// MongoDB 连接数据库名
-const mongodbCollection = process.env.MONGODB_COLLECTION || 'test'
-
-let mongodbConnectLink = ''
-let userpwd = ''
-
-if (mongodbUsername) {
-    userpwd = `${mongodbUsername}:${mongodbPassword}@`
+const config = {
+    // MongoDB 连接数据库名
+    mongodbCollection: process.env.MONGODB_COLLECTION || 'test',
+    // MongoDB 连接域名
+    mongodbHost: process.env.MONGODB_HOST || 'localhost',
+    // MongoDB 密码
+    mongodbPassword: process.env.MONGODB_PASSWORD || '',
+    // MongoDB 连接端口
+    mongodbPort: process.env.MONGODB_PORT || '27017',
+    // MongoDB 用户名
+    mongodbUsername: process.env.MONGODB_USERNAME || ''
 }
 
-mongodbConnectLink = `mongodb://${userpwd}${mongodbHost}:${mongodbPort}/${mongodbCollection}`
+let userpwd = ''
 
-exports.link = mongodbConnectLink
-exports.show = `${mongodbHost}:${mongodbPort}/${mongodbCollection}`
+// 如果又用户名，则拼接连接前缀
+if (config.mongodbUsername) {
+    userpwd = `${config.mongodbUsername}:${config.mongodbPassword}@`
+}
+
+// 完整的连接地址
+config.link = `mongodb://${userpwd}${config.mongodbHost}:` +
+    `${config.mongodbPort}/${config.mongodbCollection}`
+
+// 显示用
+config.show = `${config.mongodbHost}:${config.mongodbPort}/` +
+    `${config.mongodbCollection}`
+
+module.exports = config

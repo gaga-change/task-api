@@ -1,7 +1,9 @@
 const Koa = require('koa')
 
-const app = module.exports = new Koa
+const app = new Koa()
 
-app.use( async (ctx)=>{
+app.use(async (ctx) => {
     ctx.body = 'Hello World!'
 })
+
+module.exports = app

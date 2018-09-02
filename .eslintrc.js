@@ -6,7 +6,7 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2016
+        "ecmaVersion": 2017
     },
     "globals": {
         "process": true
@@ -29,7 +29,7 @@ module.exports = {
         "block-scoped-var": "error",
         "block-spacing": "error",
         "brace-style": "error",
-        "callback-return": "error",
+        "callback-return": "off",
         "camelcase": "error",
         "capitalized-comments": "error",
         "class-methods-use-this": "error",
@@ -87,7 +87,7 @@ module.exports = {
         "lines-between-class-members": "error",
         "max-classes-per-file": "error",
         "max-depth": "error",
-        "max-len": "off",
+        "max-len": "error",
         "max-lines": "error",
         "max-lines-per-function": "error",
         "max-nested-callbacks": "error",
@@ -219,14 +219,14 @@ module.exports = {
         "prefer-rest-params": "error",
         "prefer-spread": "error",
         "prefer-template": "error",
-        "quote-props": "error",
+        "quote-props": ["error", "consistent"],
         "quotes": [
             "error",
             "single"
         ],
         "radix": "error",
         "require-atomic-updates": "error",
-        "require-await": "error",
+        "require-await": "off",
         "require-jsdoc": "error",
         "require-unicode-regexp": "error",
         "rest-spread-spacing": "error",
