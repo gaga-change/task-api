@@ -16,3 +16,22 @@ node .
 | - app 接口代码
 | - config 配置文件
 | - doc 接口文档
+
+## 环境变量
+
+### MongoDB 配置 （`/config/mongo.js`）
+
+``` js
+const config = {
+    // MongoDB 连接数据库名
+    mongodbCollection: process.env.MONGODB_COLLECTION || 'test',
+    // MongoDB 连接域名
+    mongodbHost: process.env.MONGODB_HOST || 'localhost',
+    // MongoDB 密码
+    mongodbPassword: process.env.MONGODB_PASSWORD || '',
+    // MongoDB 连接端口
+    mongodbPort: process.env.MONGODB_PORT || '27017',
+    // MongoDB 用户名
+    mongodbUsername: process.env.MONGODB_USERNAME || ''
+}
+```
