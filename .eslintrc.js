@@ -6,12 +6,13 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2017
+        "ecmaVersion": 2018
     },
     "globals": {
         "process": true
     },
     "rules": {
+        "no-console": ["error", { allow: ["warn", "error"] }],
         "accessor-pairs": "error",
         "array-bracket-newline": "error",
         "array-bracket-spacing": "error",
@@ -230,7 +231,7 @@ module.exports = {
         "require-jsdoc": "error",
         "require-unicode-regexp": "error",
         "rest-spread-spacing": "error",
-        "semi": "off",
+        "semi": ["error", "never"],
         "semi-spacing": "error",
         "semi-style": "error",
         "sort-imports": "error",
