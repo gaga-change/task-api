@@ -1,5 +1,5 @@
 const app = require('./app')
+const configApp = require('./config/app')
 
-const port = 3000
-
-app.listen(port)
+// 启动项目
+app.listen(configApp.port)

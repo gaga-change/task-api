@@ -1,11 +1,11 @@
 const Koa = require('koa')
 const mongoose = require('mongoose')
 const logger = require('koa-logger')
-const config = require('../config')
+const configMongo = require('../config/mongo')
 const app = new Koa()
 
 // MongoDB 连接
-mongoose.connect(config.mongo.link, {useNewUrlParser: true})
+mongoose.connect(configMongo.link, {useNewUrlParser: true})
 const db = mongoose.connection
 
 // MongoDB 连接异常输出
