@@ -8,14 +8,17 @@
 npm i 
 
 # 启动项目
-node .
+node ./index.js
 ```
 
 ## 目录结构
 
 | - app 接口代码
+| - | - models 数据存储模型
 | - config 配置文件
-| - doc 接口文档
+| - | - app.js 站点信息配置文件
+| - | - mongo.js MongoDB连接配置文件
+| - doc REST Clinent 接口调试文件
 
 ## 环境变量
 
@@ -33,5 +36,14 @@ const config = {
     mongodbPort: process.env.MONGODB_PORT || '27017',
     // MongoDB 用户名
     mongodbUsername: process.env.MONGODB_USERNAME || ''
+}
+```
+
+### 站点配置 （`/config/app.js`）
+
+``` js
+const config = {
+    // 端口
+    port: process.env.PORT || '3000'
 }
 ```
