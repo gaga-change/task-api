@@ -21,10 +21,12 @@
     "koa-body": "^2.6.0",
     "koa-logger": "^3.2.0",
     "koa-mount": "^3.0.0",
+    "koa-passport": "^4.1.0",
     "koa-router": "^7.4.0",
     "koa-session": "^5.9.0",
     "mongoose": "^5.2.12",
-    "only": "0.0.2"
+    "only": "0.0.2",
+    "passport-github": "^1.1.0"
   },
   "devDependencies": {
     "eslint": "^5.5.0"

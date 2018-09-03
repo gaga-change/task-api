@@ -1,0 +1,73 @@
+# 用户相关接口
+
+@baseUrl = http://localhost:3000/api
+@baseTag = user
+@id = 
+
+### 增加用户【增】【admin】
+
+POST {{baseUrl}}/{{baseTag}} HTTP/1.1
+content-type: application/json
+
+{
+    "username": "test",
+    "passport": "test",
+    "name": "test"
+}
+
+### 删除用户【删】【admin】
+
+DELETE {{baseUrl}}/{{baseTag}}/{{id}} HTTP/1.1
+
+### 修改用户【改】【admin】
+
+PUT {{baseUrl}}/{{baseTag}}/{{id}} HTTP/1.1
+content-type: application/json
+
+{
+    "username": "test",
+    "passport": "test",
+    "name": "test"
+}
+
+### 查询用户（详情）【查】【admin】
+
+GET {{baseUrl}}/{{baseTag}}/{{id}} HTTP/1.1
+
+### 查询用户（列表）【查】【admin】
+
+GET {{baseUrl}}/{{baseTag}}
+    ?page=1
+    &pageSize=20
+
+
+### 修改密码【auth】
+
+PUT {{baseUrl}}/{{baseTag}}/modify HTTP/1.1
+
+{
+    "username": "test",
+    "passport": "test",
+    "newPassport": "test1"
+}
+
+### 获取当前登入用户【cookie】
+
+GET {{baseUrl}}/{{baseTag}}/current HTTP/1.1
+
+### 登入【auth】
+
+POST {{baseUrl}}/{{baseTag}}/login HTTP/1.1
+
+{
+    "username": "test",
+    "passport": "test",
+    "newPassport": "test1"
+}
+
+### 退出登入【cookie】
+
+GET {{baseUrl}}/{{baseTag}}/logout HTTP/1.1
+
+
+
