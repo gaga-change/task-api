@@ -9,7 +9,10 @@ module.exports = {
         "ecmaVersion": 2018
     },
     "globals": {
-        "process": true
+        "process": true,
+        "describe": true,
+        "after": true,
+        "it": true
     },
     "rules": {
         "no-console": ["error", { allow: ["warn", "error"] }],
@@ -210,7 +213,7 @@ module.exports = {
         "operator-linebreak": "error",
         "padded-blocks": "off",
         "padding-line-between-statements": "error",
-        "prefer-arrow-callback": "error",
+        "prefer-arrow-callback": "off",
         "prefer-const": "error",
         "prefer-destructuring": "error",
         "prefer-numeric-literals": "error",

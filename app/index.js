@@ -16,4 +16,5 @@ app.use(async (ctx) => {
     ctx.body = '我的清单 - 接口'
 })
 
-module.exports = app
+module.exports.db = db
+module.exports.app = app
