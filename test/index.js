@@ -1,5 +1,4 @@
-const {app, db} = require('../app')
-const server = app.listen()
+const {server, db} = require('../index.js')
 const request = require('supertest').agent(server)
 
 describe('Index Page', function indexPage () {
@@ -10,7 +9,7 @@ describe('Index Page', function indexPage () {
         db.close()
     })
 
-    it('should say "Hello World"', function index (done) {
+    it('show home page', function index (done) {
         request.
             get('/').
             expect(successCode).
