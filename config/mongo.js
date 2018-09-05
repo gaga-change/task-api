@@ -3,6 +3,14 @@
  */
 
 const config = {
+    // 链接前缀
+    getUserPwd () {
+        if (this.mongodbUsername) {
+            return `${this.mongodbUsername}:${this.mongodbPassword}@`
+        }
+
+        return ''
+    },
     // MongoDB 连接数据库名
     mongodbCollection: process.env.MONGODB_COLLECTION || 'test',
     // MongoDB 连接域名
@@ -13,17 +21,11 @@ const config = {
     mongodbPort: process.env.MONGODB_PORT || '27017',
     // MongoDB 用户名
     mongodbUsername: process.env.MONGODB_USERNAME || ''
-}
-
-let userpwd = ''
-
-// 如果又用户名，则拼接连接前缀
-if (config.mongodbUsername) {
-    userpwd = `${config.mongodbUsername}:${config.mongodbPassword}@`
+    // 用户名 + 密码
 }
 
 // 完整的连接地址
-config.link = `mongodb://${userpwd}${config.mongodbHost}:` +
+config.link = `mongodb://${config.getUserPwd()}${config.mongodbHost}:` +
     `${config.mongodbPort}/${config.mongodbCollection}`
 
 // 显示用
