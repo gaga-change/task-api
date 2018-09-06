@@ -2,37 +2,38 @@
 
 @baseUrl = http://localhost:3000/api
 @baseTag = user
-@id = 
+@contentType = application/json
 
 ### 增加用户【增】【admin】
 
+# @name createUser
 POST {{baseUrl}}/{{baseTag}} HTTP/1.1
-content-type: application/json
+content-type: {{contentType}}
 
 {
     "username": "test",
-    "passport": "test",
+    "password": "test",
     "name": "test"
 }
 
 ### 删除用户【删】【admin】
 
-DELETE {{baseUrl}}/{{baseTag}}/{{id}} HTTP/1.1
+DELETE {{baseUrl}}/{{baseTag}}/{{createUser.response.body.$._id}} HTTP/1.1
 
 ### 修改用户【改】【admin】
 
-PUT {{baseUrl}}/{{baseTag}}/{{id}} HTTP/1.1
-content-type: application/json
+PUT {{baseUrl}}/{{baseTag}}/{{createUser.response.body.$._id}} HTTP/1.1
+content-type: {{contentType}}
 
 {
-    "username": "test",
-    "passport": "test",
-    "name": "test"
+    "username": "test1",
+    "password": "test1",
+    "name": "test2"
 }
 
 ### 查询用户（详情）【查】【admin】
 
-GET {{baseUrl}}/{{baseTag}}/{{id}} HTTP/1.1
+GET {{baseUrl}}/{{baseTag}}/{{createUser.response.body.$._id}} HTTP/1.1
 
 ### 查询用户（列表）【查】【admin】
 
@@ -47,8 +48,8 @@ PUT {{baseUrl}}/{{baseTag}}/modify HTTP/1.1
 
 {
     "username": "test",
-    "passport": "test",
-    "newPassport": "test1"
+    "password": "test",
+    "newpassword": "test1"
 }
 
 ### 获取当前登入用户【cookie】
@@ -61,13 +62,10 @@ POST {{baseUrl}}/{{baseTag}}/login HTTP/1.1
 
 {
     "username": "test",
-    "passport": "test",
-    "newPassport": "test1"
+    "password": "test",
+    "newpassword": "test1"
 }
 
 ### 退出登入【cookie】
 
 GET {{baseUrl}}/{{baseTag}}/logout HTTP/1.1
-
-
-

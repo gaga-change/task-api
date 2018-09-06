@@ -19,6 +19,9 @@ node ./index.js
 | - | - app.js 站点信息配置文件
 | - | - mongo.js MongoDB连接配置文件
 | - doc REST Clinent 接口调试文件
+| - index.js 项目启动文件
+| - Dockerfile 创建容器镜像文件
+| - eslintrc.js 规则定义
 
 ## 环境变量
 
