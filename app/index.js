@@ -10,7 +10,7 @@ const app = new Koa()
 // MongoDB 连接
 mongoose.connect(mongoConnectLink, {useNewUrlParser: true})
 const db = mongoose.connection
-// Session配置参数
+// Session 配置参数
 const CONFIG = {
     httpOnly: true,
     key: 'koa:sess',
@@ -21,15 +21,17 @@ const CONFIG = {
     signed: true
 }
 
+// Session 配置
+app.keys = ['junn secret 4']
 // MongoDB 连接异常输出
 db.on('error', console.error.bind(console, 'connection error:'))
-// Body解析
+// Body 解析
 app.use(koaBody({jsonLimit: '10kb'}))
-// Session解析
+// Session 解析
 app.use(session(CONFIG, app))
 // 日志信息输出
 app.use(logger())
-// Api接口
+// Api 接口
 app.use(api)
 app.use(async (ctx) => {
     ctx.body = '我的清单 - 接口'

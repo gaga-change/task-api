@@ -20,7 +20,7 @@ content-type: {{contentType}}
 
 DELETE {{baseUrl}}/{{baseTag}}/{{createUser.response.body.$._id}} HTTP/1.1
 
-### 修改用户【改】【admin】
+### 修改用户【改】【admin】【auth】
 
 PUT {{baseUrl}}/{{baseTag}}/{{createUser.response.body.$._id}} HTTP/1.1
 content-type: {{contentType}}
@@ -41,29 +41,18 @@ GET {{baseUrl}}/{{baseTag}}
     ?page=1
     &pageSize=20
 
-
-### 修改密码【auth】
-
-PUT {{baseUrl}}/{{baseTag}}/modify HTTP/1.1
-
-{
-    "username": "test",
-    "password": "test",
-    "newpassword": "test1"
-}
-
-### 获取当前登入用户【cookie】
+### 获取当前登入用户
 
 GET {{baseUrl}}/{{baseTag}}/current HTTP/1.1
 
-### 登入【auth】
+### 登入
 
 POST {{baseUrl}}/{{baseTag}}/login HTTP/1.1
+content-type: {{contentType}}
 
 {
     "username": "test",
-    "password": "test",
-    "newpassword": "test1"
+    "password": "test"
 }
 
 ### 退出登入【cookie】

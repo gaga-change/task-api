@@ -49,7 +49,7 @@ UserSchema.methods = {
      * @returns {Boolean} 返回是否正确
      */
     authenticate (plainText) {
-        return this.encryptPassword(plainText) === this.hashed_password
+        return this.encryptPassword(plainText) === this.hashedPassword
     },
 
     /**

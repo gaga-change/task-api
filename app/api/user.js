@@ -12,8 +12,11 @@ module.exports = {
      */
     async add (ctx) {
         const {body} = ctx.request
-        const user = new User(only(body, 'username password name'))
+        let user = only(body, 'username password name')
+        const findUser = await User.findOne({username: user.username})
 
+        ctx.assert(!findUser, PARAMS_ERROR, 'User already exists')
+        user = new User(user)
         ctx.body = await user.save()
     },
 
@@ -30,6 +33,15 @@ module.exports = {
         ctx.state.user = user
         ctx.assert(ctx.state.user, PARAMS_ERROR, 'User not found')
         await next()
+    },
+
+    /**
+     * 查看当前登入用户
+     * @param {Object} ctx context
+     * @returns {void} 返回用户对象 或 返回空
+     */
+    async current (ctx) {
+        ctx.body = ctx.session.user
     },
 
     /**
@@ -54,6 +66,35 @@ module.exports = {
             // 多个
             ctx.body = await User.find({})
         }
+    },
+
+    /**
+     * 登入
+     * @param {Object} ctx context
+     * @returns {void} 返回用户对象
+     */
+    async login (ctx) {
+        const {body} = ctx.request
+        const user = only(body, 'username password')
+        const findUser = await User.findOne({username: user.username})
+
+        ctx.assert(findUser, PARAMS_ERROR, 'User not found')
+        ctx.assert(
+            findUser.authenticate(user.password),
+            PARAMS_ERROR, 'Password error'
+        )
+        ctx.session.user = findUser
+        ctx.body = findUser
+    },
+
+    /**
+     * 退出登入
+     * @param {Object} ctx context
+     * @returns {void}
+     */
+    async logout (ctx) {
+        ctx.session.user = null
+        ctx.body = ''
     },
 
     /**
