@@ -1,6 +1,7 @@
 const router = require('koa-router')()
 const user = require('./user')
 const list = require('./list')
+const task = require('./task')
 
 // 登入
 router.post('/api/user/login', user.login)
@@ -21,11 +22,18 @@ router.get('/api/user', user.get)
 // 添加清单【auth】
 router.post('/api/list', list.add)
 // 删除清单【auth】
-router.delete('/api/list/:id', list.bind, list.del)
+router.delete('/api/list/:listId', list.bind, list.del)
 // 修改清单【auth】
-router.put('/api/list/:id', list.bind, list.put)
+router.put('/api/list/:listId', list.bind, list.put)
 // 查询清单【auth】
-router.get('/api/list/:id', list.bind, list.get)
+router.get('/api/list/:listId', list.bind, list.get)
 router.get('/api/list', list.get)
+
+// 添加任务【auth】
+router.post('/api/task/:listId', task.add)
+// 删除任务【auth】
+router.delete('/api/task/:listId/:taskId', task.del)
+// 修改任务【auth】
+router.put('/api/task/:listId/:taskId', task.put)
 
 module.exports = router.routes()

@@ -24,8 +24,8 @@ module.exports = {
      * @returns {void}
      */
     async bind (ctx, next) {
-        const {id} = ctx.params
-        const list = await List.findById(id)
+        const {listId: id} = ctx.params
+        const list = await List.findById(id).select('-tasks')
 
         ctx.state.list = list
         ctx.assert(ctx.state.list, PARAMS_ERROR, 'List not found')

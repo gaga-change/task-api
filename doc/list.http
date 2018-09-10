@@ -2,6 +2,7 @@
 
 @baseUrl = http://localhost:3000/api
 @baseTag = list
+@baseTag2 = task
 @contentType = application/json
 
 ### 增加清单【增】【auth】
@@ -25,8 +26,7 @@ PUT {{baseUrl}}/{{baseTag}}/{{createList.response.body.$._id}} HTTP/1.1
 content-type: {{contentType}}
 
 {
-    "type": "2",
-    "gaga": "123"
+    "type": "2"
 }
 
 ### 查询清单（详情）【查】【auth】
@@ -36,5 +36,38 @@ GET {{baseUrl}}/{{baseTag}}/{{createList.response.body.$._id}} HTTP/1.1
 ### 查询清单（列表）【查】【auth】
 
 GET {{baseUrl}}/{{baseTag}}
+    ?page=1
+    &pageSize=20
+
+### 增加任务【增】【auth】
+
+# @name createTask
+POST {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}} HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "name": "test"
+}
+
+### 删除任务【删】【auth】
+
+DELETE {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}}/{{createTask.response.body.$._id}} HTTP/1.1
+
+### 修改任务【改】【auth】
+
+PUT {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}}/{{createTask.response.body.$._id}} HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "type": "2"
+}
+
+### 查询任务（详情）【查】【auth】
+
+GET {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}}/{{createTask.response.body.$._id}} HTTP/1.1
+
+### 查询任务（列表）【查】【auth】
+
+GET {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}}
     ?page=1
     &pageSize=20
