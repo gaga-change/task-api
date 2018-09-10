@@ -39,11 +39,13 @@ module.exports = {
      * @returns {void} 返回任务对象或任务列表
      */
     async get (ctx) {
-        if (ctx.state.task) {
-            // 单个
-            ctx.body = ctx.state.task
+        const {listId} = ctx.params
+
+        if (listId) {
+            // 单个清单
+            ctx.body = await List.findById(listId)
         } else {
-            // 多个
+            // 多个清单
             ctx.body = await List.find({})
         }
     },

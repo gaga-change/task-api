@@ -62,12 +62,12 @@ content-type: {{contentType}}
     "type": "2"
 }
 
-### 查询任务（详情）【查】【auth】
+### 查询任务（单个清单）【查】【auth】
 
-GET {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}}/{{createTask.response.body.$._id}} HTTP/1.1
+GET {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}} HTTP/1.1
 
-### 查询任务（列表）【查】【auth】
+### 查询任务（多个清单）【查】【auth】
 
-GET {{baseUrl}}/{{baseTag2}}/{{createList.response.body.$._id}}
+GET {{baseUrl}}/{{baseTag2}}
     ?page=1
     &pageSize=20
