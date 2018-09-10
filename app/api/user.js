@@ -1,6 +1,5 @@
 const User = require('../models/user_schema')
 const only = require('only')
-
 const PARAMS_ERROR = 401
 
 module.exports = {
