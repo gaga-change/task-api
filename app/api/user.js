@@ -1,6 +1,6 @@
 const User = require('../models/user_schema')
 const only = require('only')
-const PARAMS_ERROR = 401
+const code = require('../code')
 
 module.exports = {
 
@@ -14,7 +14,7 @@ module.exports = {
         let user = only(body, 'username password name')
         const findUser = await User.findOne({username: user.username})
 
-        ctx.assert(!findUser, PARAMS_ERROR, 'User already exists')
+        ctx.assert(!findUser, code.BadRequest, '用户已存在')
         user = new User(user)
         ctx.body = await user.save()
     },
@@ -30,7 +30,7 @@ module.exports = {
         const user = await User.findById(id)
 
         ctx.state.user = user
-        ctx.assert(ctx.state.user, PARAMS_ERROR, 'User not found')
+        ctx.assert(ctx.state.user, code.BadRequest, '用户不存在')
         await next()
     },
 
@@ -77,10 +77,10 @@ module.exports = {
         const user = only(body, 'username password')
         const findUser = await User.findOne({username: user.username})
 
-        ctx.assert(findUser, PARAMS_ERROR, 'User not found')
+        ctx.assert(findUser, code.Unauthorized, '邮箱不存在')
         ctx.assert(
             findUser.authenticate(user.password),
-            PARAMS_ERROR, 'Password error'
+            code.Unauthorized, '密码错误'
         )
         ctx.session.user = findUser
         ctx.body = findUser

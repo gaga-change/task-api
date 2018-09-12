@@ -1,6 +1,6 @@
 const List = require('../models/list_schema')
 const only = require('only')
-const PARAMS_ERROR = 401
+const code = require('../code')
 
 module.exports = {
 
@@ -28,7 +28,7 @@ module.exports = {
         const list = await List.findById(id).select('-tasks')
 
         ctx.state.list = list
-        ctx.assert(ctx.state.list, PARAMS_ERROR, 'List not found')
+        ctx.assert(ctx.state.list, code.BadRequest, '清单不存在')
         await next()
     },
 

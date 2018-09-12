@@ -1,7 +1,6 @@
 const List = require('../models/list_schema')
 const mongoose = require('mongoose')
 const only = require('only')
-const PARAMS_ERROR = 401
 
 module.exports = {
 
