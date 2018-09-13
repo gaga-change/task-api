@@ -52,7 +52,7 @@ module.exports = {
             ctx.body = ctx.state.list
         } else {
             // 多个
-            ctx.body = await List.find({})
+            ctx.body = await List.find({}).select('-tasks')
         }
     },
 
