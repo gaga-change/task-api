@@ -1,6 +1,7 @@
 const List = require('../models/list_schema')
 const mongoose = require('mongoose')
 const only = require('only')
+const code = require('../code')
 
 module.exports = {
 
@@ -42,10 +43,15 @@ module.exports = {
 
         if (listId) {
             // 单个清单
-            ctx.body = await List.findById(listId)
+            const list = await List.findById(listId).select('tasks')
+
+            ctx.assert(list, code.BadRequest, '清单不存在')
+            ctx.body = list.tasks
         } else {
             // 多个清单
-            ctx.body = await List.find({})
+            const lists = await List.find({}).select('tasks')
+
+            ctx.body = lists
         }
     },
 
