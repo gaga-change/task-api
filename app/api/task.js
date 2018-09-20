@@ -36,7 +36,7 @@ module.exports = {
     /**
      * 查询任务
      * @param {Object} ctx context
-     * @returns {void} 返回任务对象或任务列表
+     * @returns {void} 返回任务列表
      */
     async get (ctx) {
         const {listId} = ctx.params
@@ -53,6 +53,29 @@ module.exports = {
 
             ctx.body = lists
         }
+    },
+
+    /**
+     * 查询任务(单个)
+     * @param {Object} ctx context
+     * @returns {void} 返回任务对象
+     */
+    async getOne (ctx) {
+        const {listId, taskId} = ctx.params
+        const list = await List.findOne({
+            _id: new mongoose.Types.ObjectId(listId)
+        }, {
+            tasks: {
+                '$elemMatch': {
+                    _id: new mongoose.Types.ObjectId(taskId)
+                }
+            }
+        })
+
+        ctx.assert(list && list.tasks.length, code.BadRequest, '任务不存在')
+        const [task] = list.tasks
+
+        ctx.body = task
     },
 
     /**

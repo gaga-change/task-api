@@ -35,8 +35,11 @@ router.post('/api/task/:listId', task.add)
 router.delete('/api/task/:listId/:taskId', task.del)
 // 修改任务【auth】
 router.put('/api/task/:listId/:taskId', task.put)
-// 查询任务【auth】
-router.get('/api/task/:listId', task.get)
+// 查询任务（所有清单）【auth】
 router.get('/api/task', task.get)
+// 查询任务（清单下所有任务）【auth】
+router.get('/api/task/:listId', task.get)
+// 查询任务（单条）【auth】
+router.get('/api/task/:listId/:taskId', task.getOne)
 
 module.exports = router.routes()
