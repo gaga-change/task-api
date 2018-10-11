@@ -86,7 +86,7 @@ module.exports = {
     async put (ctx) {
         const {body} = ctx.request
         const {listId, taskId} = ctx.params
-        const task = only(body, 'name type')
+        const task = only(body, 'name type content')
         const update = {}
 
         // 修改参数
