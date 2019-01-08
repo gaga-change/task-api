@@ -7,13 +7,13 @@ const {link: mongoConnectLink} = require('../config/mongo')
 const api = require('./api')
 const app = new Koa()
 const http = require('http').createServer(app.callback())
-const io = require('socket.io')(http, {
-    cookie: false,
-    path: '/api/socket',
-    pingInterval: 10000,
-    pingTimeout: 5000,
-    serveClient: false
-})
+// const io = require('socket.io')(http, {
+//     cookie: false,
+//     path: '/api/socket',
+//     pingInterval: 10000,
+//     pingTimeout: 5000,
+//     serveClient: false
+// })
 
 // MongoDB 连接
 mongoose.connect(mongoConnectLink, {useNewUrlParser: true})
@@ -29,12 +29,12 @@ const CONFIG = {
     signed: true
 }
 
-io.on('connection', function(socket){
-    console.log('a user connected')
-    socket.on('disconnect', function(){
-        console.log('user disconnected')
-    })
-})
+// io.on('connection', function(socket){
+//     console.log('a user connected')
+//     socket.on('disconnect', function(){
+//         console.log('user disconnected')
+//     })
+// })
 
 // Session 配置
 app.keys = ['junn secret 4']
