@@ -29,7 +29,7 @@ const UserSchema = new Schema({
     type: {
         type: String
     },
-    // 用户名
+    // 用户名（邮箱）
     username: {
         default: '',
         trim: true,

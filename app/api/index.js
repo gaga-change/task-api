@@ -8,6 +8,8 @@ const {checkAdmin, checkAuth} = require('./tools')
 router.post('/api/user/login', user.login)
 // 退出登入
 router.get('/api/user/logout', user.logout)
+// 注册
+router.post('/api/user/register', user.register)
 // 查看当前用户
 router.get('/api/user/current', user.current)
 // 修改当前用户【auth】

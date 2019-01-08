@@ -14,7 +14,7 @@ module.exports = {
         let user = only(body, 'username password name')
         const findUser = await User.findOne({username: user.username})
 
-        ctx.assert(!findUser, code.BadRequest, '用户已存在')
+        ctx.assert(!findUser, code.BadRequest, '邮箱已存在')
         user = new User(user)
         ctx.body = await user.save()
     },
@@ -131,5 +131,20 @@ module.exports = {
             }
         }
         ctx.body = await ctx.state.user.save()
+    },
+
+    /**
+     * 注册
+     * @param {Object} ctx context
+     * @returns {void} 返回用户对象
+     */
+    async register (ctx) {
+        const {body} = ctx.request
+        let user = only(body, 'username password name')
+        const findUser = await User.findOne({username: user.username})
+
+        ctx.assert(!findUser, code.BadRequest, '邮箱已存在')
+        user = new User(user)
+        ctx.body = await user.save()
     }
 }
