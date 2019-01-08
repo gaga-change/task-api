@@ -2,6 +2,9 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 const {Schema} = mongoose
+const TYPE = {
+    ADMIN: 'admin'
+}
 
 /**
  * User Schema
@@ -20,6 +23,10 @@ const UserSchema = new Schema({
     },
     salt: {
         default: '',
+        type: String
+    },
+    // 用户类型
+    type: {
         type: String
     },
     // 用户名
@@ -81,6 +88,25 @@ UserSchema.methods = {
 }
 
 /** 静态方法 */
-UserSchema.statics = { }
+UserSchema.statics = {
+
+    /**
+     * 校验当前用户是否为管理员
+     * @param {*} obj 用户实例
+     * @returns {Boolean} true为管理员
+     */
+    isAdmin (obj) {
+        return obj.type === TYPE.ADMIN
+    },
+
+    /**
+     * 设置当前用户为管理员
+     * @param {*} obj 用户实例
+     * @returns {void}
+     */
+    setAdmin (obj) {
+        obj.type = TYPE.ADMIN
+    }
+}
 
 module.exports = mongoose.model('User', UserSchema)

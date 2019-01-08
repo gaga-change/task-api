@@ -112,5 +112,24 @@ module.exports = {
             }
         }
         ctx.body = await ctx.state.user.save()
+    },
+
+    /**
+     * 修改用户
+     * @param {Object} ctx context
+     * @returns {void} 返回用户对象
+     */
+    async putCurrent (ctx) {
+        const {body} = ctx.request
+        const user = only(body, 'username password name')
+        const oldUser = await User.findById(ctx.session.user)
+
+        // 修改参数
+        for (const key in user) {
+            if (Reflect.apply(Object.prototype.hasOwnProperty, user, [key])) {
+                oldUser[key] = user[key]
+            }
+        }
+        ctx.body = await ctx.state.user.save()
     }
 }

@@ -13,6 +13,7 @@ module.exports = {
         const {body} = ctx.request
         let list = only(body, 'name')
 
+        list.author = ctx.session.user
         list = new List(list)
         ctx.body = await list.save()
     },
@@ -25,11 +26,27 @@ module.exports = {
      */
     async bind (ctx, next) {
         const {listId: id} = ctx.params
-        const list = await List.findById(id).select('-tasks')
+        const list = await List.findById(id).
+            select('-tasks').
+            populate('author')
 
         ctx.state.list = list
         ctx.assert(ctx.state.list, code.BadRequest, '清单不存在')
         await next()
+    },
+
+    /**
+     * 校验是否为本人操作。需搭配 bind、checkAuth 操作
+     * @param {Object} ctx context
+     * @param {Object} next next
+     * @returns {void}
+     */
+    async checkMy (ctx, next) {
+        ctx.assert(
+            ctx.state.list.author._id === ctx.session.user._id,
+            code.Unauthorized, 'GO_LOGIN'
+        )
+        await next
     },
 
     /**
@@ -52,7 +69,9 @@ module.exports = {
             ctx.body = ctx.state.list
         } else {
             // 多个
-            ctx.body = await List.find({}).select('-tasks')
+            ctx.body = await List.find({
+                author: ctx.session.user
+            }).select('-tasks')
         }
     },
 
