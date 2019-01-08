@@ -31,19 +31,19 @@ router.delete('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.del)
 router.put('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.put)
 // 查询清单【auth】
 router.get('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.get)
-router.get('/api/list', list.get)
+router.get('/api/list', checkAuth, list.get)
 
 // 添加任务【auth】
-router.post('/api/task/:listId', task.add)
+router.post('/api/list/:listId/task', checkAuth, task.add)
 // 删除任务【auth】
-router.delete('/api/task/:listId/:taskId', task.del)
+router.delete('/api/list/:listId/task/:taskId', checkAuth, task.del)
 // 修改任务【auth】
-router.put('/api/task/:listId/:taskId', task.put)
+router.put('/api/list/:listId/task/:taskId', checkAuth, task.put)
 // 查询任务（所有清单）【auth】
-router.get('/api/task', task.get)
+router.get('/api/task', checkAuth, task.get)
 // 查询任务（清单下所有任务）【auth】
-router.get('/api/task/:listId', task.get)
+router.get('/api/list/:listId/task', checkAuth, task.get)
 // 查询任务（单条）【auth】
-router.get('/api/task/:listId/:taskId', task.getOne)
+router.get('/api/list/:listId/task/:taskId', checkAuth, task.getOne)
 
 module.exports = router.routes()

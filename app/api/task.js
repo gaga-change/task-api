@@ -16,7 +16,8 @@ module.exports = {
         const task = only(body, 'name')
 
         task._id = new mongoose.Types.ObjectId()
-        await List.updateOne({_id: listId}, {$push: {tasks: task}})
+        await List.updateOne({_id: listId,
+            author: ctx.session.user}, {$push: {tasks: task}})
         ctx.body = task
     },
 
@@ -28,7 +29,10 @@ module.exports = {
     async del (ctx) {
         const {listId, taskId} = ctx.params
 
-        ctx.body = await List.updateOne({_id: listId}, {
+        ctx.body = await List.updateOne({
+            _id: listId,
+            author: ctx.session.user
+        }, {
             $pull: {tasks: {_id: taskId}}
         })
     },
@@ -43,13 +47,16 @@ module.exports = {
 
         if (listId) {
             // 单个清单
-            const list = await List.findById(listId).select('tasks')
+            const list = await List.findOne({_id: listId,
+                author: ctx.session.user}).select('tasks')
 
             ctx.assert(list, code.BadRequest, '清单不存在')
             ctx.body = list.tasks
         } else {
             // 多个清单
-            const lists = await List.find({}).select('tasks')
+            const lists = await List.find({
+                author: ctx.session.user
+            }).select('tasks')
 
             ctx.body = lists
         }
@@ -63,7 +70,8 @@ module.exports = {
     async getOne (ctx) {
         const {listId, taskId} = ctx.params
         const list = await List.findOne({
-            _id: new mongoose.Types.ObjectId(listId)
+            _id: new mongoose.Types.ObjectId(listId),
+            author: ctx.session.user
         }, {
             tasks: {
                 '$elemMatch': {
@@ -97,6 +105,7 @@ module.exports = {
         }
         // 修改参数
         ctx.body = await List.updateOne({'_id': listId,
+            'author': ctx.session.user,
             'tasks._id': taskId}, update)
     }
 }
