@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const user = require('./user')
 const list = require('./list')
 const task = require('./task')
-const {checkAdmin, checkAuth} = require('./tools')
+const {checkAdmin, checkAuth} = require('./Tools')
 
 // 登入
 router.post('/api/user/login', user.login)
