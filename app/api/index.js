@@ -41,6 +41,12 @@ router.post('/api/list/:listId/task', checkAuth, task.add)
 router.delete('/api/list/:listId/task/:taskId', checkAuth, task.del)
 // 修改任务【auth】
 router.put('/api/list/:listId/task/:taskId', checkAuth, task.put)
+router.patch(
+    '/api/list/:listId/task/:taskId',
+    checkAuth, list.bind,
+    list.checkMy,
+    task.patch
+)
 // 查询任务（所有清单）【auth】
 router.get('/api/task', checkAuth, task.get)
 // 查询任务（清单下所有任务）【auth】

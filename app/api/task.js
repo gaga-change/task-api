@@ -2,6 +2,7 @@ const List = require('../models/list_schema')
 const mongoose = require('mongoose')
 const only = require('only')
 const code = require('../code')
+const Task = require('./bean/Task')
 
 module.exports = {
 
@@ -87,14 +88,37 @@ module.exports = {
     },
 
     /**
-     * 修改任务
+     * 修改任务 只改变传递的值
+     * @param {Object} ctx context
+     * @returns {void} 返回任务对象
+     */
+    async patch (ctx) {
+        const {body} = ctx.request
+        const {listId, taskId} = ctx.params
+        const task = new Task(body)
+        const update = {}
+        const patch = task.getPatch()
+
+        for (const key in patch) {
+            if (Reflect.apply(Object.prototype.hasOwnProperty, patch, [key])) {
+                update[`tasks.$.${key}`] = patch[key]
+            }
+        }
+        // 修改参数
+        ctx.body = await List.updateOne({'_id': listId,
+            'author': ctx.session.user,
+            'tasks._id': taskId}, update)
+    },
+
+    /**
+     * 修改任务 需传递完整的实例
      * @param {Object} ctx context
      * @returns {void} 返回任务对象
      */
     async put (ctx) {
         const {body} = ctx.request
         const {listId, taskId} = ctx.params
-        const task = only(body, 'name type content')
+        const task = only(body, 'name type content close')
         const update = {}
 
         // 修改参数

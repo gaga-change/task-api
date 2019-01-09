@@ -2,17 +2,6 @@
 
 const mongoose = require('mongoose')
 const {Schema} = mongoose
-// 清单状态
-const TYPE = {
-    // 激活状态
-    ACTIVE: 1,
-    // 关闭状态
-    CLOSE: 2,
-    // 收集箱【系统默认添加】
-    DEFAULT: 3,
-    // 垃圾箱【系统默认添加】
-    TRASH: 4
-}
 
 /**
  * List Schema
@@ -23,6 +12,11 @@ const ListSchema = new Schema({
     author: {
         ref: 'User',
         type: Schema.Types.ObjectId
+    },
+    // 是否关闭
+    close: {
+        default: false,
+        type: Boolean
     },
     // 颜色
     color: {
@@ -42,6 +36,11 @@ const ListSchema = new Schema({
     // 任务列表
     tasks: [
         {
+            // 是否关闭
+            close: {
+                default: false,
+                type: Boolean
+            },
             // 完成时间
             closeAt: {
                 default: Date.now(),
@@ -66,19 +65,9 @@ const ListSchema = new Schema({
             priority: {
                 default: 0,
                 type: Number
-            },
-            // 类型
-            type: {
-                default: TYPE.ACTIVE,
-                type: Number
             }
         }
-    ],
-    // 类型
-    type: {
-        default: TYPE.ACTIVE,
-        type: Number
-    }
+    ]
 }, {timestamps: true})
 
 /** 实例方法 */
