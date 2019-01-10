@@ -2,7 +2,7 @@ const List = require('../models/list_schema')
 const mongoose = require('mongoose')
 const only = require('only')
 const code = require('../code')
-const Task = require('./bean/Task')
+const Task = require('./bean/task')
 
 module.exports = {
 
