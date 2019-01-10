@@ -94,7 +94,10 @@ module.exports = {
             }
         })
 
-        ctx.assert(list && list.tasks.length, code.BadRequest, '任务不存在')
+        ctx.assert(
+            list && list.tasks.length, code.BadRequest,
+            '抱歉，任务不存在，它已被删除或被移出清单'
+        )
         const [task] = list.tasks
 
         ctx.body = task
