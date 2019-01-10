@@ -14,10 +14,9 @@ module.exports = {
     async add (ctx) {
         const {body} = ctx.request
         const {listId} = ctx.params
-        const task = only(body, 'name')
+        const task = new Task(body)
 
-        task._id = new mongoose.Types.ObjectId()
-        task.createAt = Date.now()
+        // Task._id = new mongoose.Types.ObjectId()
         await List.updateOne({_id: listId,
             author: ctx.session.user}, {$push: {tasks: task}})
         ctx.body = task

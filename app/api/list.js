@@ -43,6 +43,7 @@ module.exports = {
      */
     async checkMy (ctx, next) {
         ctx.assert(
+            ctx.state.list.author &&
             ctx.state.list.author.id === ctx.session.user._id,
             code.Unauthorized, 'GO_LOGIN'
         )

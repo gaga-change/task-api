@@ -1,7 +1,7 @@
 class Task {
-    constructor ({name, type, content, close, closeAt, createAt}) {
+    constructor ({_id, name, content, close, closeAt, createAt}) {
+        this._id = _id
         this.name = name
-        this.type = type
         this.content = content
         this.close = close
         if (closeAt === 'SYS_TIME') {
