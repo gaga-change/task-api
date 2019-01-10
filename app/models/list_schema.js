@@ -43,7 +43,6 @@ const ListSchema = new Schema({
             },
             // 完成时间
             closeAt: {
-                default: Date.now(),
                 type: Date
             },
             // 内容
@@ -53,7 +52,6 @@ const ListSchema = new Schema({
             },
             // 创建时间
             createAt: {
-                default: Date.now(),
                 type: Date
             },
             // 任务名称

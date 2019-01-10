@@ -17,6 +17,7 @@ module.exports = {
         const task = only(body, 'name')
 
         task._id = new mongoose.Types.ObjectId()
+        task.createAt = Date.now()
         await List.updateOne({_id: listId,
             author: ctx.session.user}, {$push: {tasks: task}})
         ctx.body = task
@@ -47,12 +48,25 @@ module.exports = {
         const {listId} = ctx.params
 
         if (listId) {
-            // 单个清单
-            const list = await List.findOne({_id: listId,
-                author: ctx.session.user}).select('tasks')
+            const list = await List.aggregate([
+                {
+                    $match: {
+                        _id: new mongoose.Types.ObjectId(listId),
+                        author: new mongoose.
+                            Types.ObjectId(ctx.session.user._id)
+                    }
+                }
+            ]).unwind('tasks').
+                sort('tasks.close -tasks.closeAt -tasks.createAt').
+                project({
+                    _id: '$tasks._id',
+                    close: '$tasks.close',
+                    closeAt: '$tasks.closeAt',
+                    createAt: '$tasks.createAt',
+                    name: '$tasks.name'
+                })
 
-            ctx.assert(list, code.BadRequest, '清单不存在')
-            ctx.body = list.tasks
+            ctx.body = list
         } else {
             // 多个清单
             const lists = await List.find({

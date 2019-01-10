@@ -1,9 +1,11 @@
 class Task {
-    constructor ({name, type, content, close}) {
+    constructor ({name, type, content, close, closeAt, createAt}) {
         this.name = name
         this.type = type
         this.content = content
         this.close = close
+        this.closeAt = closeAt
+        this.createAt = createAt
     }
 
     /**
