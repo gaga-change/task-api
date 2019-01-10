@@ -43,6 +43,7 @@ const ListSchema = new Schema({
             },
             // 完成时间
             closeAt: {
+                default: null,
                 type: Date
             },
             // 内容

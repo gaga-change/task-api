@@ -119,9 +119,10 @@ module.exports = {
             }
         }
         // 修改参数
-        ctx.body = await List.updateOne({'_id': listId,
+        await List.updateOne({'_id': listId,
             'author': ctx.session.user,
             'tasks._id': taskId}, update)
+        ctx.body = task
     },
 
     /**

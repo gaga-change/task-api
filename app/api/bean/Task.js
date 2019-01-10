@@ -4,7 +4,11 @@ class Task {
         this.type = type
         this.content = content
         this.close = close
-        this.closeAt = closeAt
+        if (closeAt === 'SYS_TIME') {
+            this.closeAt = Date.now()
+        } else {
+            this.closeAt = closeAt
+        }
         this.createAt = createAt
     }
 
