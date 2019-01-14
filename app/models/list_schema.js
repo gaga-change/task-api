@@ -36,6 +36,9 @@ const ListSchema = new Schema({
     // 任务列表
     tasks: [
         {
+            _id: {
+                type: Schema.Types.ObjectId
+            },
             // 是否关闭
             close: {
                 default: false,
@@ -54,6 +57,11 @@ const ListSchema = new Schema({
             // 创建时间
             createAt: {
                 type: Date
+            },
+            // 是否删除
+            delete: {
+                default: false,
+                type: Boolean
             },
             // 任务名称
             name: {

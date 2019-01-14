@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const List = require('../models/list_schema')
 const only = require('only')
 const code = require('../code')
@@ -74,6 +75,58 @@ module.exports = {
                 author: ctx.session.user
             }).select('-tasks')
         }
+    },
+
+    /**
+     * 查询清单（包含未完成子任务）
+     * @param {Object} ctx context
+     * @returns {void} 返回清单对象或清单列表
+     */
+    async getListContainNoCloseTask (ctx) {
+        const listKey = {
+            'close': '$close',
+            'color': '$color',
+            'name': '$name',
+            'order': '$order'
+        }
+
+        ctx.body = await List.aggregate([
+            {
+                $match: {
+                    author:
+                        new mongoose.Types.ObjectId(ctx.session.user._id)
+                }
+            },
+            {
+                $project: {
+                    ...listKey,
+                    'tasks': {
+                        '$filter': {
+                            as: 'task',
+                            cond: {
+                                $eq: [
+                                    '$$task.close',
+                                    false
+                                ]
+                            },
+                            input: '$tasks'
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    ...listKey,
+                    'tasks': {
+                        _id: 1,
+                        close: 1,
+                        closeAt: 1,
+                        createAt: 1,
+                        name: 1
+                    }
+                }
+            }
+        ])
     },
 
     /**

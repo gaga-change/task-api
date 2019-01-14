@@ -31,6 +31,12 @@ router.post('/api/list', checkAuth, list.add)
 router.delete('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.del)
 // 修改清单【auth】
 router.put('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.put)
+// 查询所有清单（包含清单下所有未完成任务）【auth】
+router.get(
+    '/api/list/andNoCloseTask',
+    checkAuth,
+    list.getListContainNoCloseTask
+)
 // 查询清单【auth】
 router.get('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.get)
 router.get('/api/list', checkAuth, list.get)
