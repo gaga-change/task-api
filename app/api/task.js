@@ -148,5 +148,33 @@ module.exports = {
         ctx.body = await List.updateOne({'_id': listId,
             'author': ctx.session.user,
             'tasks._id': taskId}, update)
+    },
+    async switching (ctx) {
+        const {body} = ctx.request
+        const {listId, taskId} = ctx.params
+        const task = new Task(body)
+
+        // 已完成 -> 未完成
+        if (task.close) {
+            await List.updateOne({
+                _id: listId,
+                author: ctx.session.user
+            }, {
+                $pull: {tasks2: {_id: taskId}}
+            })
+            ctx.body = await List.updateOne({_id: listId,
+                author: ctx.session.user}, {$push: {tasks: task}})
+        } else {
+            // 未完成 -> 已完成
+            await List.updateOne({
+                _id: listId,
+                author: ctx.session.user
+            }, {
+                $pull: {tasks: {_id: taskId}}
+            })
+            ctx.body = await List.updateOne({_id: listId,
+                author: ctx.session.user}, {$push: {tasks2: task}})
+        }
+
     }
 }

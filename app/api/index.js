@@ -43,6 +43,8 @@ router.get('/api/list', checkAuth, list.get)
 
 // 添加任务【auth】
 router.post('/api/list/:listId/task', checkAuth, task.add)
+// 修改任务状态
+router.post('/api/list/:listId/task/:taskId/switch', checkAuth, task.switching)
 // 删除任务【auth】
 router.delete('/api/list/:listId/task/:taskId', checkAuth, task.del)
 // 修改任务【auth】

@@ -74,6 +74,48 @@ const ListSchema = new Schema({
                 type: Number
             }
         }
+    ],
+    // 任务列表
+    tasks2: [
+        {
+            _id: {
+                type: Schema.Types.ObjectId
+            },
+            // 是否关闭
+            close: {
+                default: false,
+                type: Boolean
+            },
+            // 完成时间
+            closeAt: {
+                default: null,
+                type: Date
+            },
+            // 内容
+            content: {
+                default: '',
+                type: String
+            },
+            // 创建时间
+            createAt: {
+                type: Date
+            },
+            // 是否删除
+            delete: {
+                default: false,
+                type: Boolean
+            },
+            // 任务名称
+            name: {
+                default: '',
+                type: String
+            },
+            // 优先级（数字越高优先级越高）
+            priority: {
+                default: 0,
+                type: Number
+            }
+        }
     ]
 }, {timestamps: true})
 

@@ -28,7 +28,7 @@ module.exports = {
     async bind (ctx, next) {
         const {listId: id} = ctx.params
         const list = await List.findById(id).
-            select('-tasks').
+            select('-tasks -tasks2').
             populate('author')
 
         ctx.state.list = list
@@ -73,7 +73,7 @@ module.exports = {
             // 多个
             ctx.body = await List.find({
                 author: ctx.session.user
-            }).select('-tasks')
+            }).select('-tasks -tasks2')
         }
     },
 
