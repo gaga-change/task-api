@@ -34,7 +34,8 @@ module.exports = {
             _id: listId,
             author: ctx.session.user
         }, {
-            $pull: {tasks: {_id: taskId}}
+            $pull: {tasks: {_id: taskId},
+                tasks2: {_id: taskId}}
         })
     },
 
@@ -93,21 +94,14 @@ module.exports = {
      * @returns {void} 返回任务对象
      */
     async patch (ctx) {
-        const {body} = ctx.request
-        const {listId, taskId} = ctx.params
-        const task = new Task(body)
-        const update = {}
-        const patch = task.getPatch()
+        const {task} = await taskService.getTaskOne(ctx)
 
-        for (const key in patch) {
-            if (Reflect.apply(Object.prototype.hasOwnProperty, patch, [key])) {
-                update[`tasks.$.${key}`] = patch[key]
-            }
+        if (task.close) {
+            await taskService.patchTask2(ctx)
+        } else {
+            await taskService.patchTask(ctx)
         }
-        // 修改参数
-        await List.updateOne({'_id': listId,
-            'author': ctx.session.user,
-            'tasks._id': taskId}, update)
+
         ctx.body = task
     },
 
