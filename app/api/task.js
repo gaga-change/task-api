@@ -1,8 +1,8 @@
 const List = require('../models/list_schema')
 const mongoose = require('mongoose')
 const only = require('only')
-const code = require('../code')
 const Task = require('./bean/task')
+const taskService = require('./taskService')
 
 module.exports = {
 
@@ -82,23 +82,7 @@ module.exports = {
      * @returns {void} 返回任务对象
      */
     async getOne (ctx) {
-        const {listId, taskId} = ctx.params
-        const list = await List.findOne({
-            _id: new mongoose.Types.ObjectId(listId),
-            author: ctx.session.user
-        }, {
-            tasks: {
-                '$elemMatch': {
-                    _id: new mongoose.Types.ObjectId(taskId)
-                }
-            }
-        })
-
-        ctx.assert(
-            list && list.tasks.length, code.BadRequest,
-            '抱歉，任务不存在，它已被删除或被移出清单'
-        )
-        const [task] = list.tasks
+        const {task} = await taskService.getTaskOne(ctx)
 
         ctx.body = task
     },
@@ -151,30 +135,35 @@ module.exports = {
     },
     async switching (ctx) {
         const {body} = ctx.request
-        const {listId, taskId} = ctx.params
-        const task = new Task(body)
+        const {list, task} = await taskService.getTaskOne(ctx)
 
-        // 已完成 -> 未完成
-        if (task.close) {
-            await List.updateOne({
-                _id: listId,
-                author: ctx.session.user
-            }, {
-                $pull: {tasks2: {_id: taskId}}
-            })
-            ctx.body = await List.updateOne({_id: listId,
-                author: ctx.session.user}, {$push: {tasks: task}})
+        if (task.close === body.close) {
+            ctx.body = '状态已被切换'
         } else {
+            task.close = !task.close
             // 未完成 -> 已完成
-            await List.updateOne({
-                _id: listId,
-                author: ctx.session.user
-            }, {
-                $pull: {tasks: {_id: taskId}}
-            })
-            ctx.body = await List.updateOne({_id: listId,
-                author: ctx.session.user}, {$push: {tasks2: task}})
+            if (task.close) {
+                await List.updateOne({
+                    _id: list._id
+                }, {
+                    $pull: {tasks: {_id: task._id}}
+                })
+                ctx.body = await List.updateOne(
+                    {_id: list._id},
+                    {$push: {tasks2: task}}
+                )
+            } else {
+            // 已完成 -> 未完成
+                await List.updateOne({
+                    _id: list._id
+                }, {
+                    $pull: {tasks2: {_id: task._id}}
+                })
+                ctx.body = await List.updateOne(
+                    {_id: list._id},
+                    {$push: {tasks: task}}
+                )
+            }
         }
-
     }
 }
