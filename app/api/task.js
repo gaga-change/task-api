@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const only = require('only')
 const Task = require('./bean/task')
 const taskService = require('./taskService')
+const Page = require('./page')
 
 module.exports = {
 
@@ -75,6 +76,26 @@ module.exports = {
 
             ctx.body = lists
         }
+    },
+
+    /**
+     * 查询任务（清单下所有未完成任务，以及15条已完成任务）
+     * @param {Object} ctx context
+     * @returns {void} 返回任务列表
+     */
+    async get2 (ctx) {
+        const {listId} = ctx.params
+        const page = new Page(ctx.query)
+
+        const list = await List.findOne({
+            _id: listId,
+            author: ctx.session.user
+        }).slice('tasks2', [
+            page.skip,
+            page.pageSize
+        ])
+
+        ctx.body = list
     },
 
     /**
