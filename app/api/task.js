@@ -4,6 +4,7 @@ const only = require('only')
 const Task = require('./bean/task')
 const taskService = require('./taskService')
 const Page = require('./page')
+const code = require('../code')
 
 module.exports = {
 
@@ -79,7 +80,7 @@ module.exports = {
     },
 
     /**
-     * 查询任务（清单下所有未完成任务，以及15条已完成任务）
+     * 查询任务（清单下所有未完成任务，以及n条已完成任务）
      * @param {Object} ctx context
      * @returns {void} 返回任务列表
      */
@@ -90,12 +91,17 @@ module.exports = {
         const list = await List.findOne({
             _id: listId,
             author: ctx.session.user
-        }).slice('tasks2', [
-            page.skip,
-            page.pageSize
-        ])
+        }).select('-tasks2.content -tasks.content').
+            slice('tasks2', [
+                page.skip,
+                page.pageSize
+            ])
 
-        ctx.body = list
+        ctx.assert(list, code.BadRequest, '清单不存在')
+        ctx.body = {
+            task: list.tasks,
+            task2: list.tasks2
+        }
     },
 
     /**
@@ -148,6 +154,12 @@ module.exports = {
             'author': ctx.session.user,
             'tasks._id': taskId}, update)
     },
+
+    /**
+     * 任务开关。已完成转未完成 或 未完成转已完成
+     * @param {Object} ctx context
+     * @returns {void} 返回操作结果
+     */
     async switching (ctx) {
         const {body} = ctx.request
         const {list, task} = await taskService.getTaskOne(ctx)
@@ -158,26 +170,11 @@ module.exports = {
             task.close = !task.close
             // 未完成 -> 已完成
             if (task.close) {
-                await List.updateOne({
-                    _id: list._id
-                }, {
-                    $pull: {tasks: {_id: task._id}}
-                })
-                ctx.body = await List.updateOne(
-                    {_id: list._id},
-                    {$push: {tasks2: task}}
-                )
+                task.closeAt = body.closeAt
+                ctx.body = await taskService.removeToTask2(list, task)
             } else {
             // 已完成 -> 未完成
-                await List.updateOne({
-                    _id: list._id
-                }, {
-                    $pull: {tasks2: {_id: task._id}}
-                })
-                ctx.body = await List.updateOne(
-                    {_id: list._id},
-                    {$push: {tasks: task}}
-                )
+                ctx.body = await taskService.removeToTask(list, task)
             }
         }
     }

@@ -44,6 +44,12 @@ module.exports = {
         return {list,
             task}
     },
+
+    /**
+     * 修改未完成任务
+     * @param {Object} ctx context
+     * @returns {Object} 返回操作结果
+     */
     async patchTask (ctx) {
         const {body} = ctx.request
         const {listId, taskId} = ctx.params
@@ -62,6 +68,12 @@ module.exports = {
             'tasks._id': taskId}, update)
 
     },
+
+    /**
+     * 修改已完成任务
+     * @param {Object} ctx context
+     * @returns {Object} 返回操作结果
+     */
     async patchTask2 (ctx) {
         const {body} = ctx.request
         const {listId, taskId} = ctx.params
@@ -78,5 +90,48 @@ module.exports = {
             'author': ctx.session.user,
             'tasks2._id': taskId}, update2)
 
+    },
+
+    /**
+     * 已完成转未完成
+     * @param {*} list 清单
+     * @param {*} task 任务
+     *  @returns {void} 返回操作结果
+     */
+    async removeToTask (list, task) {
+        await List.updateOne({
+            _id: list._id
+        }, {
+            $pull: {tasks2: {_id: task._id}}
+        })
+        const res = await List.updateOne(
+            {_id: list._id},
+            {$push: {tasks: task}}
+        )
+
+        return res
+    },
+
+    /**
+     * 未完成转已完成
+     * @param {*} list 清单
+     * @param {*} task 任务
+     *  @returns {void} 返回操作结果
+     */
+    async removeToTask2 (list, task) {
+        await List.updateOne({
+            _id: list._id
+        }, {
+            $pull: {tasks: {_id: task._id}}
+        })
+
+        const res = await List.updateOne(
+            {_id: list._id},
+            {$push: {tasks2: {$each: [task],
+                $position: 0,
+                $sort: {createAt: -1}}}}
+        )
+
+        return res
     }
 }
