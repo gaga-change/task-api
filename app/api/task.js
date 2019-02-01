@@ -105,6 +105,30 @@ module.exports = {
     },
 
     /**
+     *  查询已完成任务
+     * @param {Object} ctx context
+     * @returns {void} 返回任务列表
+     */
+    async getClosedTasks (ctx) {
+        const {listId} = ctx.params
+        const DEFALUT_SKIP = 0
+        const DEFALUT_LIMIT = 20
+        const {skip = DEFALUT_SKIP, limit = DEFALUT_LIMIT} = ctx.query
+
+        const list = await List.findOne({
+            _id: listId,
+            author: ctx.session.user
+        }).select('-tasks2.content -tasks').
+            slice('tasks2', [
+                Number(skip) || DEFALUT_SKIP,
+                Number(limit) || DEFALUT_LIMIT
+            ])
+
+        ctx.assert(list, code.BadRequest, '清单不存在')
+        ctx.body = list.tasks2
+    },
+
+    /**
      * 查询任务(单个)
      * @param {Object} ctx context
      * @returns {void} 返回任务对象

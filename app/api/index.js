@@ -59,8 +59,11 @@ router.patch(
 router.get('/api/task', checkAuth, task.get)
 // 查询任务（清单下所有任务）【auth】
 router.get('/api/list/:listId/task', checkAuth, task.get)
-// 查询任务（清单下所有未完成任务，以及n条已完成任务）
+// 查询任务（清单下所有未完成任务，以及n条已完成任务）【auth】
 router.get('/api/list/:listId/task2', checkAuth, task.get2)
+// 查询已完成任务【auth】
+router.get('/api/list/:listId/task/closed', checkAuth, task.getClosedTasks)
+
 // 查询任务（单条）【auth】
 router.get('/api/list/:listId/task/:taskId', checkAuth, task.getOne)
 
