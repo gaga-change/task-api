@@ -129,7 +129,7 @@ module.exports = {
             {_id: list._id},
             {$push: {tasks2: {$each: [task],
                 $position: 0,
-                $sort: {createAt: -1}}}}
+                $sort: {closeAt: -1}}}}
         )
 
         return res
