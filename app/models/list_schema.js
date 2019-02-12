@@ -30,7 +30,6 @@ const ListSchema = new Schema({
     },
     // 排序
     order: {
-        default: Date.now(),
         type: Number
     },
     // 任务列表

@@ -16,6 +16,7 @@ module.exports = {
 
         list.author = ctx.session.user
         list = new List(list)
+        list.order = Date.now()
         ctx.body = await list.save()
     },
 
@@ -73,7 +74,8 @@ module.exports = {
             // 多个
             ctx.body = await List.find({
                 author: ctx.session.user
-            }).select('-tasks -tasks2')
+            }).select('-tasks -tasks2').
+                sort('-order')
         }
     },
 
