@@ -27,6 +27,14 @@ router.get('/api/user', checkAdmin, user.get)
 
 // 添加清单【auth】
 router.post('/api/list', checkAuth, list.add)
+// 清单order 调整
+router.put(
+    '/api/list/:listId/order',
+    checkAuth,
+    list.bind,
+    list.checkMy,
+    list.orderChange
+)
 // 删除清单【auth】
 router.delete('/api/list/:listId', checkAuth, list.bind, list.checkMy, list.del)
 // 修改清单【auth】

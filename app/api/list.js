@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const List = require('../models/list_schema')
 const only = require('only')
 const code = require('../code')
+const ADD_NUM = 1
+const RED_NUM = -1
 
 module.exports = {
 
@@ -129,6 +131,24 @@ module.exports = {
                 }
             }
         ])
+    },
+
+    async orderChange (ctx) {
+        const {body} = ctx.request
+        const params = only(body, 'min max type order')
+        const {list} = ctx.state
+        let num = null
+
+        if (params.type === '+') {
+            num = ADD_NUM
+        } else {
+            num = RED_NUM
+        }
+        const res = await List.updateMany({order: {$gt: params.min,
+            $lt: params.max}}, {$inc: {order: num}})
+
+        await List.updateOne({_id: list._id}, {order: params.order})
+        ctx.body = res
     },
 
     /**
