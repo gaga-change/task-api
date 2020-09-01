@@ -4,3 +4,4 @@ test.js
 .nyc_output/
 coverage/
 .vscode
+package-lock.json

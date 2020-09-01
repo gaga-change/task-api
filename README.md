@@ -25,28 +25,5 @@ node ./index.js
 
 ## 环境变量
 
-### MongoDB 配置 （`/config/mongo.js`）
-
-``` js
-const config = {
-    // MongoDB 连接数据库名
-    mongodbCollection: process.env.MONGODB_COLLECTION || 'test',
-    // MongoDB 连接域名
-    mongodbHost: process.env.MONGODB_HOST || 'localhost',
-    // MongoDB 密码
-    mongodbPassword: process.env.MONGODB_PASSWORD || '',
-    // MongoDB 连接端口
-    mongodbPort: process.env.MONGODB_PORT || '27017',
-    // MongoDB 用户名
-    mongodbUsername: process.env.MONGODB_USERNAME || ''
-}
-```
-
-### 站点配置 （`/config/app.js`）
-
-``` js
-const config = {
-    // 端口
-    port: process.env.PORT || '3000'
-}
-```
+`PORT` 端口号，默认3000
+`MONGO_LINK` mongodb链接地址
